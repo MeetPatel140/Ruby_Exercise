@@ -6,7 +6,7 @@ def array_max(string)
   string.each do
     count += 1
  end
- puts "There are total " + "#{count}" + " elements in your String."
+ puts "There are Maximum " + "#{count}" + " elements in your String."
 end
 
 print "Enter any String: "

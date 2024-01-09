@@ -1,14 +1,15 @@
 #Write a function to find the maximum element in an array.
 
-def array_max(string)
-  string = string.split(" ")
-  count = 0
-  string.each do
-    count += 1
- end
- puts "There are Maximum " + "#{count}" + " elements in your String."
+arr = [10, 20, 30, 40, 50]
+
+def array_max(arr)
+  max = arr[0]
+  for value in arr
+    if value > max
+      max = value
+    end
+  end
+  max
 end
 
-print "Enter any String: "
-input = gets.chomp.to_s
-puts array_max(input)
+puts array_max(arr)

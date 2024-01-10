@@ -2,7 +2,6 @@
 
 arr = [1,2,3,2,1]
 $unique = []
-found = false
 
 def find_unique(arr)
   for i in 0...arr.length

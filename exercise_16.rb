@@ -3,7 +3,7 @@
 h = {'a'=>10,'b'=>50,'c'=>100,'d'=>200}
 k = 'b'
 
-def has_key(hash, key)
+def search_key(hash, key)
   if hash.has_key?(key)
     "#{key} is present in Hash"
   else
@@ -11,4 +11,4 @@ def has_key(hash, key)
   end
 end
 
-puts has_key(h,k)
+puts search_key(h,k)

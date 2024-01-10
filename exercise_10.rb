@@ -4,11 +4,11 @@ arr1 = [1, 2, 3, 4, 5]
 arr2 = [1, 2, 3, 4, 5]
 
 def check_array(array1, array2)
-  return false if array1.length != array2.length
+  false if array1.length != array2.length
 
   for i in 0...array1.length
     if array1[i] != array2[i]
-      return false
+      false
     end
   end
   true

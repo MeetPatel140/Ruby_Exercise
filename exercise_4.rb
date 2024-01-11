@@ -6,11 +6,7 @@ def count_vowels(string)
       count += 1
     end
   end
-  if count == 0
-    "No Vowels Found !"
-  elsif count > 0
-    "#{count} Vowel(s) Found!"
-  end
+  count == 0 ? "No Vowels Found !" : "Vowels Found: #{count}"
 end
 
 print "Enter any String: "

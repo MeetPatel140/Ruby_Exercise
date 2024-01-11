@@ -3,11 +3,9 @@
 def remove_duplicate_chars(string)
   chars = string.chars
   result = []
-
   chars.each do |char|
     result << char unless result.include?(char)
   end
-
   result.join("")
 end
 

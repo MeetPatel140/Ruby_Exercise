@@ -1,45 +1,28 @@
 # Shopping CLI:
 # create a command-line shopping app where users can see the available items, can add particular item in the cart, and can buy that product.
 
-class Item
-  attr_accessor :name, :price, :quantity
-
-  def initialize(name, price, quantity)
-    @name = name
-    @price = price
-    @quantity = quantity
-  end
-
-  def buy(quantity)
-    if quantity <= @quantity
-      @quantity -= quantity
-      puts "You bought #{quantity} #{name}(s) for ₨.#{quantity * price}."
-    else
-      puts "Insufficient quantity of #{name} available."
-    end
-  end
-end
+require_relative 'item'
 
 def list_all_items(items)
   puts ""
-  puts "+" + "-" * 17 + "[ List of Available Items ]" + "-" * 17 + "+"
-  puts "|".ljust(8) + "|".ljust(37) + "|".ljust(11) + "|".ljust(6) + "|"
-  puts "|  No.  |                 Item               |  Price   | Qty |"
-  puts "|".ljust(8) + "|".ljust(37) + "|".ljust(11) + "|".ljust(6) + "|"
-  puts "+-------+------------------------------------+----------+-----+"
-  puts "|".ljust(8) + "|".ljust(37) + "|".ljust(11) + "|".ljust(6) + "|"
+  puts "+" + "-" * 20 + "[ List of Available Items ]" + "-" * 20 + "+"
+  puts "|".ljust(8) + "|".ljust(37) + "|".ljust(17) + "|".ljust(6) + "|"
+  puts "|  No.  |                 Item               |     Price      | Qty |"
+  puts "|".ljust(8) + "|".ljust(37) + "|".ljust(17) + "|".ljust(6) + "|"
+  puts "+-------+------------------------------------+----------------+-----+"
+  puts "|".ljust(8) + "|".ljust(37) + "|".ljust(17) + "|".ljust(6) + "|"
 
   items.each.with_index(1) do |item, index|
     index_str = index.to_s.ljust(4)
     name_str = item.name.ljust(35)
-    price_str = "₨.#{item.price.round(2)}".ljust(9)
+    price_str = "₨.#{item.price.round(2)}".ljust(15)
     quantity_str = item.quantity.to_s.ljust(4)
 
     puts "|   #{index_str}| #{name_str}| #{price_str}| #{quantity_str}|"
   end
 
-  puts "|".ljust(8) + "|".ljust(37) + "|".ljust(11) + "|".ljust(6) + "|"
-  puts "+-------+------------------------------------+----------+-----+"
+  puts "|".ljust(8) + "|".ljust(37) + "|".ljust(17) + "|".ljust(6) + "|"
+  puts "+-------+------------------------------------+----------------+-----+"
 end
 
 def add_item_to_cart(items, cart)
@@ -62,6 +45,7 @@ def add_item_to_cart(items, cart)
         selected_item.buy(quantity)
       else
         puts "Insufficient quantity of #{selected_item.name} available."
+        cart.delete(selected_item)
       end
     else
       puts "Invalid quantity. Please enter a positive number."
@@ -81,27 +65,27 @@ def checkout(cart)
     return
   end
 
-  puts "+" + "-" * 18 + "[ Cart ]" + "-" * 11 + "+" + "-" * 6 + "+"
-  puts "|".ljust(27) + "|".ljust(11) + "|".ljust(7) + "|"
-  puts "|            Items         |  Price   |  Qty |"
-  puts "|".ljust(27) + "|".ljust(11) + "|".ljust(7) + "|"
-  puts "+--------------------------+----------+------+"
-  puts "|".ljust(27) + "|".ljust(11) + "|".ljust(7) + "|"
+  puts "+" + "-" * 20 + "[ Cart ]" + "-" * 14 + "+" + "-" * 6 + "+"
+  puts "|".ljust(27) + "|".ljust(16) + "|".ljust(7) + "|"
+  puts "|          Items           |     Price     |  Qty |"
+  puts "|".ljust(27) + "|".ljust(16) + "|".ljust(7) + "|"
+  puts "+---------------------------+--------------+------+"
+  puts "|".ljust(27) + "|".ljust(16) + "|".ljust(7) + "|"
 
   cart.each do |item, quantity|
     amount = item.price * quantity
     total_amount += amount
     total_qty += quantity
 
-    puts "| #{item.name.ljust(25)}| ₨.#{item.price.round(2).to_s.ljust(7)}|  #{quantity.to_s.ljust(4)}|"
-    puts "|".ljust(27) + "|".ljust(11) + "|".ljust(7) + "|"
+    puts "| #{item.name.ljust(25)}| ₨.#{item.price.round(2).to_s.ljust(12)}|  #{quantity.to_s.ljust(4)}|"
+    puts "|".ljust(27) + "|".ljust(16) + "|".ljust(7) + "|"
   end
 
-  puts "+--------------------------+----------+------+"
-  puts "|".ljust(27) + "|".ljust(11) + "|".ljust(7) + "|"
-  puts "|" + " Total : ".ljust(26) + "|" + " ₨.#{total_amount.round(2)}".ljust(10) + "|" + "  #{total_qty}".ljust(6) + "|"
-  puts "|".ljust(27) + "|".ljust(11) + "|".ljust(7) + "|"
-  puts "+--------------------------+----------+------+"
+  puts "+--------------------------+---------------+------+"
+  puts "|".ljust(27) + "|".ljust(16) + "|".ljust(7) + "|"
+  puts "|" + " Total : ".ljust(26) + "|" + " ₨.#{total_amount.round(2)}".ljust(15) + "|" + "  #{total_qty}".ljust(6) + "|"
+  puts "|".ljust(27) + "|".ljust(16) + "|".ljust(7) + "|"
+  puts "+--------------------------+---------------+------+"
   puts ""
   print "Are your sure you want to Place this order ? (Y/N) : "
   confirmation = gets.chomp.downcase
@@ -126,27 +110,28 @@ def view_cart(cart)
   total_amount = 0
   total_qty = 0
 
-  puts "+" + "-" * 18 + "[ Cart ]" + "-" * 11 + "+" + "-" * 6 + "+"
-  puts "|".ljust(27) + "|".ljust(11) + "|".ljust(7) + "|"
-  puts "|          Items           |  Price   |  Qty |"
-  puts "|".ljust(27) + "|".ljust(11) + "|".ljust(7) + "|"
-  puts "+--------------------------+----------+------+"
-  puts "|".ljust(27) + "|".ljust(11) + "|".ljust(7) + "|"
+  puts "+" + "-" * 20 + "[ Cart ]" + "-" * 14 + "+" + "-" * 6 + "+"
+  puts "|".ljust(27) + "|".ljust(16) + "|".ljust(7) + "|"
+  puts "|          Items           |     Price     |  Qty |"
+  puts "|".ljust(27) + "|".ljust(16) + "|".ljust(7) + "|"
+  puts "+--------------------------+---------------+------+"
+  puts "|".ljust(27) + "|".ljust(16) + "|".ljust(7) + "|"
 
   cart.each do |item, quantity|
     amount = item.price * quantity
     total_amount += amount
     total_qty += quantity
 
-    puts "| #{item.name.ljust(25)}| ₨.#{item.price.round(2).to_s.ljust(7)}|  #{quantity.to_s.ljust(4)}|"
-    puts "|".ljust(27) + "|".ljust(11) + "|".ljust(7) + "|"
-    puts "+--------------------------+----------+------+"
-    puts "|".ljust(27) + "|".ljust(11) + "|".ljust(7) + "|"
-    puts "|" + " Total : ".ljust(26) + "|" + " ₨.#{total_amount.round(2)}".ljust(10) + "|" + "  #{total_qty}".ljust(6) + "|"
-    puts "|".ljust(27) + "|".ljust(11) + "|".ljust(7) + "|"
-    puts "+--------------------------+----------+------+"
-    puts ""
+    puts "| #{item.name.ljust(25)}| ₨.#{item.price.round(2).to_s.ljust(12)}|  #{quantity.to_s.ljust(4)}|"
+    puts "|".ljust(27) + "|".ljust(16) + "|".ljust(7) + "|"
   end
+  puts "+--------------------------+---------------+------+"
+  puts "|".ljust(27) + "|".ljust(16) + "|".ljust(7) + "|"
+  puts "|" + " Total : ".ljust(26) + "|" + " ₨.#{total_amount.round(2)}".ljust(15) + "|" + "  #{total_qty}".ljust(6) + "|"
+  puts "|".ljust(27) + "|".ljust(16) + "|".ljust(7) + "|"
+  puts "+--------------------------+---------------+------+"
+  puts ""
+
 end
 
 # Sample items with prices and quantities
@@ -250,7 +235,6 @@ item97 = Item.new("Wireless HDMI Adapter", 49.99, 10)
 item98 = Item.new("Digital Tape Measure", 14.99, 20)
 item99 = Item.new("Compact Wine Opener", 19.99, 30)
 item100 = Item.new("Smart Pet Feeder", 89.99, 12)
-
 
 items = [item1, item2, item3, item4, item5, item6, item7, item8, item9, item10,
          item11, item12, item13, item14, item15, item16, item17, item18, item19, item20,
